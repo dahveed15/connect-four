@@ -1,0 +1,26 @@
+.tile {
+  /*with is approx. 100 / 7 to make this a 7 x 6 grid*/
+  width: 13%;
+  height: 120px;
+  font-size: 60px;
+  background: yellow;
+  border: 8px solid green;
+  display: inline-block;
+  float: left;
+  text-align: center;
+  line-height: 150px;
+}
+
+.text, .reset {
+  text-align: center;
+}
+
+.reset {
+  margin-bottom: 7px;
+}
+
+/*centers the board somehow*/
+.container {
+  width: 1400px;
+  margin: 0 auto;
+}

@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
+import ResetButton from './resetButton';
+import Tile from './tile';
+
+// {this.state.gameBoard.map((val, idx) => 
+//   <Tile />
+// )}
 
 class App extends Component {
   
@@ -23,6 +29,7 @@ class App extends Component {
         <div className="menu">
           <h1>Connect Four</h1>
         </div>
+      
       </div>
     );
   }

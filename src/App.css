@@ -16,3 +16,19 @@
 .App-intro {
   font-size: large;
 }
+
+.red-circle {
+  width: 100px;
+  height:100px;
+  bordeR: 1px solid;
+  border-radius: 50%;
+  background-color: #f00;
+}
+
+.black-circle {
+  width: 100px;
+  height:100px;
+  bordeR: 1px solid;
+  border-radius: 50%;
+  background-color: #000;
+}

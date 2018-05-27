@@ -28,10 +28,25 @@ class App extends Component {
   updateBoard(loc, player) {
     //Checklist:
     
+    
+    let red = <div className="red-circle">
+  </div>;
+  
+   let black = <div className="black-circle">
+  </div>;
+    
     //check if a move has already been made in a square
+    
+    //since '' is a falsy value, we can just check if that spot is empty or not
+    if(this.state.gameBoard[loc] === red || this.state.gameBoard[loc] === black) {
+      //don't do anything if the spot is filled (invalid move)
+      return;
+    }
+    
     //check if the move the player made won/tied the game
     //allow the player to reset the board if they choose to when game is won and make sure you can't click on any squares after game over
-      
+    
+    
   }
   
   resetBoard(){

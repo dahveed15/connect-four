@@ -28,7 +28,6 @@ class App extends Component {
   updateBoard(loc) {
     //Checklist:
     
-    
     let red = <div className="red-circle">
   </div>;
   
@@ -37,8 +36,8 @@ class App extends Component {
     
     //check if a move has already been made in a square
     
-    //since '' is a falsy value, we can just check if that spot is empty or not
-    if(this.state.gameBoard[loc] === red || this.state.gameBoard[loc] === black) {
+    //check if a red or black circle is already in a spot (console logging gameboard rules!)
+    if(this.state.gameBoard[loc].type === 'div') {
       //don't do anything if the spot is filled (invalid move)
       return;
     }
@@ -77,10 +76,17 @@ class App extends Component {
   }
   
   render() {
+    //don't show whose turn it is if the game is over
+    let turnMessage = '';
+    if(!this.state.winner) {
+      //capitalize the string
+      turnMessage = this.state.turn[0].toUpperCase() + this.state.turn.slice(1, this.state.turn.length) + "'s turn";
+    }
     return (
       <div className="container">
         <div className="menu">
           <h1 className="text">Connect Four</h1>
+          <h2 className="text">{turnMessage}</h2>
           <Announcement winner={this.state.winner}/>
           <ResetButton reset={this.resetBoard.bind(this)}/>
         </div>

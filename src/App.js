@@ -20,7 +20,8 @@ class App extends Component {
         '', '', '', '', '', '', '',
         '', '', '', '', '', '', ''
       ],
-      turn: 'red'
+      turn: 'red',
+      winner: null
     }
   }
   
@@ -38,18 +39,18 @@ class App extends Component {
       <div className="container">
         <div className="menu">
           <h1 className="text">Connect Four</h1>
-          <Announcement/>
+          <Announcement winner={this.state.winner}/>
           <ResetButton />
         </div>
           
           {this.state.gameBoard.map((val, idx) => 
             <Tile key={idx}
                   loc={idx}
-                  val={val}
+                  value={val}
                   updateBoard={this.updateBoard.bind(this)}
                   turn={this.state.turn}/>
           )}
-          
+                    
       </div>
     );
   }

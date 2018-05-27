@@ -25,7 +25,7 @@ class App extends Component {
     }
   }
   
-  updateBoard(loc, player) {
+  updateBoard(loc) {
     //Checklist:
     
     
@@ -43,10 +43,21 @@ class App extends Component {
       return;
     }
     
+    let currentGameBoard = this.state.gameBoard;    
+    if(this.state.turn === 'red') {
+      //replace the empty spot with a red circle
+      currentGameBoard.splice(loc, 1, red);
+    } else {
+      currentGameBoard.splice(loc, 1, black);
+    }  
+    this.setState({gameBoard: currentGameBoard});
+    
+    
     //check if the move the player made won/tied the game
-    //allow the player to reset the board if they choose to when game is won and make sure you can't click on any squares after game over
     
+    //make sure you can't click on any squares after game over
     
+    this.setState({turn: (this.state.turn === 'red') ? 'black' : 'red'})
   }
   
   resetBoard(){
@@ -78,8 +89,7 @@ class App extends Component {
             <Tile key={idx}
                   loc={idx}
                   value={val}
-                  updateBoard={this.updateBoard.bind(this)}
-                  turn={this.state.turn}/>
+                  updateBoard={this.updateBoard.bind(this)}/>
           )}
                     
       </div>

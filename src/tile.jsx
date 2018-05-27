@@ -5,7 +5,7 @@ export default class Tile extends React.Component {
 
   //come back to this
   tileClick(props) {
-    props.updateBoard(props.loc, props.turn);
+    props.updateBoard(props.loc);
   }
 
   //come back to this

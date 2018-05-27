@@ -34,13 +34,29 @@ class App extends Component {
       
   }
   
+  resetBoard(){
+    //we need to use the built-in setState method to ensure that state isn't mutated
+    this.setState({
+      gameBoard: [
+        '', '', '', '', '', '', '',
+        '', '', '', '', '', '', '',
+        '', '', '', '', '', '', '',
+        '', '', '', '', '', '', '',
+        '', '', '', '', '', '', '',
+        '', '', '', '', '', '', ''
+      ],
+      turn: 'red',
+      winner: null
+    })
+  }
+  
   render() {
     return (
       <div className="container">
         <div className="menu">
           <h1 className="text">Connect Four</h1>
           <Announcement winner={this.state.winner}/>
-          <ResetButton />
+          <ResetButton reset={this.resetBoard.bind(this)}/>
         </div>
           
           {this.state.gameBoard.map((val, idx) => 

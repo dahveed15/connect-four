@@ -51,7 +51,7 @@ class App extends Component {
       currentGameBoard.splice(loc, 1, black);
     }  
     this.setState({gameBoard: currentGameBoard});
-    
+    this.getColumnIndices(loc);
     //check if the move the player made won/tied the game
     
     //make sure you can't click on any squares after game over
@@ -70,22 +70,16 @@ class App extends Component {
     
     let column = [];
     let temp = loc;
+    //this is to check if the position clicked on is in the last row already
+    //this way, we won't even have to enter the loop
     column.push(temp);
     
-    //this is to check if the position clicked on is in the last row already
-    if(lastRow.includes(temp)) {
-      //only go to the else case if the position clicked isn't the last row
-    } else {
       //iterate from the location clicked to one of the spots in last row and add the results to column
-      while(true) {
-        if(lastRow.includes(temp)) {
-          break;
-        } else {
-          temp += 7;
-          column.push(temp);
-        }
-      }
+    while(!lastRow.includes(temp)) {
+      temp += 7;
+      column.push(temp);
     }
+    
     
     return column;
   }

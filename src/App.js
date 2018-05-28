@@ -43,17 +43,31 @@ class App extends Component {
       return;
     }
     
-    let currentGameBoard = this.state.gameBoard; 
+    this.fallInCorrectSlot(loc);
     
+    //check if the move the player made won/tied the game
+    
+    //switch to the next player after the turn is over
+    this.setState({turn: (this.state.turn === 'red') ? 'black' : 'red'})
+  }
+  
+  
+  fallInCorrectSlot(loc) {
+    let red = <div className="red-circle">
+  </div>;
+  
+   let black = <div className="black-circle">
+  </div>;
+    
+    let currentGameBoard = this.state.gameBoard; 
     
     //logic to make circles fall into the lowest empty space
     if(this.state.turn === 'red') {
-      //replace the empty spot with a red circle
-      
       let columnIndices = this.getColumnIndices(loc);
       let missingSpots = columnIndices.map(el => currentGameBoard[el]).filter(el => el === '');
       let lastMissingSpotPosition = columnIndices[missingSpots.length - 1]; 
       
+      //replace the empty spot with a red circle
       currentGameBoard.splice(lastMissingSpotPosition, 1, red);
     } else {
       let columnIndices = this.getColumnIndices(loc);
@@ -64,12 +78,8 @@ class App extends Component {
       currentGameBoard.splice(lastMissingSpotPosition, 1, black);
     }  
     this.setState({gameBoard: currentGameBoard});
-    
-    //check if the move the player made won/tied the game
-    
-    //switch to the next player after the turn is over
-    this.setState({turn: (this.state.turn === 'red') ? 'black' : 'red'})
   }
+  
   
   getColumnIndices(loc) {
     let lastRow = [];

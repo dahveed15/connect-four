@@ -28,12 +28,6 @@ class App extends Component {
   updateBoard(loc) {
     //Checklist:
     
-    let red = <div className="red-circle">
-  </div>;
-  
-   let black = <div className="black-circle">
-  </div>;
-    
     //check if a move has already been made in a square
     
     //check if a red or black circle is already in a spot (console logging gameBoard rules!)
@@ -49,6 +43,10 @@ class App extends Component {
     
     //switch to the next player after the turn is over
     this.setState({turn: (this.state.turn === 'red') ? 'black' : 'red'})
+  }
+  
+  checkRowWin(loc) {
+    
   }
   
   
@@ -78,6 +76,7 @@ class App extends Component {
       currentGameBoard.splice(lastMissingSpotPosition, 1, black);
     }  
     this.setState({gameBoard: currentGameBoard});
+    // console.log(this.state.gameBoard);
   }
   
   

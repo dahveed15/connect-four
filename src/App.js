@@ -43,19 +43,29 @@ class App extends Component {
       return;
     }
     
-    let currentGameBoard = this.state.gameBoard;    
+    let currentGameBoard = this.state.gameBoard; 
+    
+    
+    //logic to make circles fall into the lowest empty space
     if(this.state.turn === 'red') {
       //replace the empty spot with a red circle
-      currentGameBoard.splice(loc, 1, red);
+      
+      let columnIndices = this.getColumnIndices(loc);
+      let missingSpots = columnIndices.map(el => currentGameBoard[el]).filter(el => el === '');
+      let lastMissingSpotPosition = columnIndices[missingSpots.length - 1]; 
+      
+      currentGameBoard.splice(lastMissingSpotPosition, 1, red);
     } else {
-      currentGameBoard.splice(loc, 1, black);
+      let columnIndices = this.getColumnIndices(loc);
+      
+      let missingSpots = columnIndices.map(el => currentGameBoard[el]).filter(el => el === '');
+      let lastMissingSpotPosition = columnIndices[missingSpots.length - 1]; 
+      
+      currentGameBoard.splice(lastMissingSpotPosition, 1, black);
     }  
     this.setState({gameBoard: currentGameBoard});
-    this.getColumnIndices(loc);
+    
     //check if the move the player made won/tied the game
-    
-    //make sure you can't click on any squares after game over
-    
     
     //switch to the next player after the turn is over
     this.setState({turn: (this.state.turn === 'red') ? 'black' : 'red'})
@@ -70,11 +80,12 @@ class App extends Component {
     
     let column = [];
     let temp = loc;
+    
     //this is to check if the position clicked on is in the last row already
     //this way, we won't even have to enter the loop
     column.push(temp);
     
-      //iterate from the location clicked to one of the spots in last row and add the results to column
+    //iterate from the location clicked to one of the spots in last row and add the results to column
     while(!lastRow.includes(temp)) {
       temp += 7;
       column.push(temp);

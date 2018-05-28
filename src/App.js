@@ -37,7 +37,8 @@ class App extends Component {
     //check if a move has already been made in a square
     
     //check if a red or black circle is already in a spot (console logging gameboard rules!)
-    if(this.state.gameBoard[loc].type === 'div') {
+    //the this.state.winner portion should take care of not being able to click in additional spots after the game is over
+    if(this.state.gameBoard[loc].type === 'div' || this.state.winner) {
       //don't do anything if the spot is filled (invalid move)
       return;
     }
@@ -56,7 +57,13 @@ class App extends Component {
     
     //make sure you can't click on any squares after game over
     
+    
+    //switch to the next player after the turn is over
     this.setState({turn: (this.state.turn === 'red') ? 'black' : 'red'})
+  }
+  
+  getColumn(pos) {
+    
   }
   
   resetBoard(){

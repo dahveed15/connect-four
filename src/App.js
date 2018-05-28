@@ -36,7 +36,7 @@ class App extends Component {
     
     //check if a move has already been made in a square
     
-    //check if a red or black circle is already in a spot (console logging gameboard rules!)
+    //check if a red or black circle is already in a spot (console logging gameBoard rules!)
     //the this.state.winner portion should take care of not being able to click in additional spots after the game is over
     if(this.state.gameBoard[loc].type === 'div' || this.state.winner) {
       //don't do anything if the spot is filled (invalid move)
@@ -52,7 +52,6 @@ class App extends Component {
     }  
     this.setState({gameBoard: currentGameBoard});
     
-    
     //check if the move the player made won/tied the game
     
     //make sure you can't click on any squares after game over
@@ -62,8 +61,33 @@ class App extends Component {
     this.setState({turn: (this.state.turn === 'red') ? 'black' : 'red'})
   }
   
-  getColumn(pos) {
+  getColumnIndices(loc) {
+    let lastRow = [];
+    for(let i = 35; i <= 41; i++) {
+      //now I have a row of indices of the last row
+      lastRow.push(i);
+    }
     
+    let column = [];
+    let temp = loc;
+    column.push(temp);
+    
+    //this is to check if the position clicked on is in the last row already
+    if(lastRow.includes(temp)) {
+      //only go to the else case if the position clicked isn't the last row
+    } else {
+      //iterate from the location clicked to one of the spots in last row and add the results to column
+      while(true) {
+        if(lastRow.includes(temp)) {
+          break;
+        } else {
+          temp += 7;
+          column.push(temp);
+        }
+      }
+    }
+    
+    return column;
   }
   
   resetBoard(){

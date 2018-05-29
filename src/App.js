@@ -34,8 +34,8 @@ class App extends Component {
       return;
     }
     
-    this.fallInCorrectSlot(loc);
     this.checkRowWin(loc);
+    
     
     //check if the move the player made won/tied the game
     
@@ -43,16 +43,33 @@ class App extends Component {
     this.setState({turn: (this.state.turn === 'red') ? 'black' : 'red'})
   }
   
+  //still not working perfectly
   checkRowWin(loc) {
-      //use this.getRowIndices(loc) to get the row of the current location
-      //filter the array with anything that has the className of "red-circle" or "black-circle" and join by ''
-      //use the match thing to check if anything is 'red-circlered-circlered-circlered-circle' or 'black-circleblack-circleblack-circleblack-circle'
-      //if so, this.setState({winner: 'something not null'})
     
-    let rowIndices = this.getRowIndices(loc);
+    //reusing logic from fallInCorrectSlot
+    this.fallInCorrectSlot(loc);
+    let currentGameBoard = this.state.gameBoard;
+    
+    let columnIndices = this.getColumnIndices(loc);
+    let missingSpots = columnIndices.map(el => currentGameBoard[el]);
+    
+    let lastMissingSpotPosition;
+    
+    for(let i = 0; i < missingSpots.length; i++) {
+      if(missingSpots[i] !== '') {
+        lastMissingSpotPosition = columnIndices[i];
+        break;
+      }
+    }
+    
+    
+    // let lastMissingSpotPosition = columnIndices[missingSpots.length - 1]; 
+    // 
+    let rowIndices = this.getRowIndices(lastMissingSpotPosition);
     
     //this will give me an array of the descriptions of each circle clicked on for each row 
       //(e.g. ['red-circle', 'black-circle', 'black-circle', 'red-circle'] => 'red-circleblack-circleblack-circlered-circle')
+    
     let rowValues = 
     rowIndices.map(el => this.state.gameBoard[el])
     .map(function(el) {
@@ -62,6 +79,7 @@ class App extends Component {
         return el.props.className;
       }
     }).join('');
+    
     
     if(rowValues.match('red-circlered-circlered-circlered-circle')) {
       this.setState({winner: 'red'})

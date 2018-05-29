@@ -55,9 +55,19 @@ class App extends Component {
       //(e.g. ['red-circle', 'black-circle', 'black-circle', 'red-circle'] => 'red-circleblack-circleblack-circlered-circle')
     let rowValues = 
     rowIndices.map(el => this.state.gameBoard[el])
-    .filter(el => el !== '')
-    .map(el => el.props.className).join('');
+    .map(function(el) {
+      if(el === '') {
+        return 'empty';
+      } else {
+        return el.props.className;
+      }
+    }).join('');
     
+    if(rowValues.match('red-circlered-circlered-circlered-circle')) {
+      this.setState({winner: 'red'})
+    } else if(rowValues.match('black-circleblack-circleblack-circleblack-circle')) {
+      this.setState({winner: 'black'})
+    }
     
   }
   

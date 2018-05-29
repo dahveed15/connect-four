@@ -38,7 +38,8 @@ class App extends Component {
     //then I could set state of the winner to end the game
     //that way, hopefully I'll avoid having to call "fallInCorrectSlot" multiple times
     
-    this.checkRowWin(loc);
+    // this.checkRowWin(loc);
+    this.checkColumnWin(loc);
     // this.checkDraw(loc);
     
     
@@ -93,6 +94,26 @@ class App extends Component {
   
   //thing to work on
   checkColumnWin(loc) {
+    
+    this.fallInCorrectSlot(loc);
+    let columnIndices = this.getColumnIndices(loc);
+    
+    let currentGameBoard = this.state.gameBoard;
+    
+    let columnValues = columnIndices.map(el => currentGameBoard[el])
+    .map(function(el) {
+      if(el === '') {
+        return 'empty';
+      } else {
+        return el.props.className;
+      }
+    }).join('');
+    
+    if(columnValues.match('red-circlered-circlered-circlered-circle')) {
+      this.setState({winner: 'red'})
+    } else if(columnValues.match('black-circleblack-circleblack-circleblack-circle')) {
+      this.setState({winner: 'black'})
+    }
     
   }
   

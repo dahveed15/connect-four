@@ -36,8 +36,8 @@ class App extends Component {
     
     //I could probably replace the logic in this method with 'return true'
     //then I could set state of the winner to end the game
-    //that way, hopefully I'll avoid having to call "fallInCorrectSlot" multiple times
     
+    //this I'm calling the fallInCorrectSlot method in the checkRowWin method, every other method following doesn't need to have fallInCorrectSlot called for its logic
     if(this.checkRowWin(loc) || this.checkColumnWin(loc)) {
       this.setState({winner: this.state.turn})
     }
@@ -50,10 +50,8 @@ class App extends Component {
     this.setState({turn: (this.state.turn === 'red') ? 'black' : 'red'})
   }
   
-  //still not working perfectly
   checkRowWin(loc) {
     
-    //I had to call fallInCorrectSlot to make this logic work, but it may get problematic when checking columns
     this.fallInCorrectSlot(loc);
     let currentGameBoard = this.state.gameBoard;
     
@@ -93,10 +91,9 @@ class App extends Component {
     return false;
   }
   
-  //thing to work on
+  
   checkColumnWin(loc) {
     
-    // this.fallInCorrectSlot(loc);
     let columnIndices = this.getColumnIndices(loc);
     
     let currentGameBoard = this.state.gameBoard;
@@ -124,7 +121,6 @@ class App extends Component {
     
   }
   
-  //may have to tweak draw logic later
   checkDraw(loc){
     
     let currentGameBoard = this.state.gameBoard;
@@ -169,6 +165,30 @@ class App extends Component {
   
   }
   
+  getColumnIndices(loc) {
+    let lastRow = [];
+    for(let i = 35; i <= 41; i++) {
+      //now I have a row of indices of the last row
+      lastRow.push(i);
+    }
+    
+    let column = [];
+    let temp = loc;
+    
+    //this is to check if the position clicked on is in the last row already
+    //this way, we won't even have to enter the loop
+    column.push(temp);
+    
+    //iterate from the location clicked to one of the spots in last row and add the results to column
+    while(!lastRow.includes(temp)) {
+      temp += 7;
+      column.push(temp);
+    }
+    
+    
+    return column;
+  }
+  
   fallInCorrectSlot(loc) {
     let red = <div className="red-circle">
   </div>;
@@ -195,29 +215,6 @@ class App extends Component {
   }
   
   
-  getColumnIndices(loc) {
-    let lastRow = [];
-    for(let i = 35; i <= 41; i++) {
-      //now I have a row of indices of the last row
-      lastRow.push(i);
-    }
-    
-    let column = [];
-    let temp = loc;
-    
-    //this is to check if the position clicked on is in the last row already
-    //this way, we won't even have to enter the loop
-    column.push(temp);
-    
-    //iterate from the location clicked to one of the spots in last row and add the results to column
-    while(!lastRow.includes(temp)) {
-      temp += 7;
-      column.push(temp);
-    }
-    
-    
-    return column;
-  }
   
   resetBoard(){
     //we need to use the built-in setState method to ensure that state isn't mutated

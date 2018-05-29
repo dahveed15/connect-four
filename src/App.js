@@ -38,10 +38,13 @@ class App extends Component {
     //then I could set state of the winner to end the game
     //that way, hopefully I'll avoid having to call "fallInCorrectSlot" multiple times
     
-    // this.checkRowWin(loc);
-    this.checkColumnWin(loc);
-    // this.checkDraw(loc);
+    if(this.checkRowWin(loc) || this.checkColumnWin(loc)) {
+      this.setState({winner: this.state.turn})
+    }
     
+    if(this.checkDraw(loc)) {
+      this.setState({winner: 'draw'})
+    }
     
     //switch to the next player after the turn is over
     this.setState({turn: (this.state.turn === 'red') ? 'black' : 'red'})
@@ -83,19 +86,17 @@ class App extends Component {
       }
     }).join('');
     
-    
-    if(rowValues.match('red-circlered-circlered-circlered-circle')) {
-      this.setState({winner: 'red'})
-    } else if(rowValues.match('black-circleblack-circleblack-circleblack-circle')) {
-      this.setState({winner: 'black'})
+    if(rowValues.match('red-circlered-circlered-circlered-circle') || rowValues.match('black-circleblack-circleblack-circleblack-circle')) {
+      return true;
     }
     
+    return false;
   }
   
   //thing to work on
   checkColumnWin(loc) {
     
-    this.fallInCorrectSlot(loc);
+    // this.fallInCorrectSlot(loc);
     let columnIndices = this.getColumnIndices(loc);
     
     let currentGameBoard = this.state.gameBoard;
@@ -109,23 +110,27 @@ class App extends Component {
       }
     }).join('');
     
-    if(columnValues.match('red-circlered-circlered-circlered-circle')) {
-      this.setState({winner: 'red'})
-    } else if(columnValues.match('black-circleblack-circleblack-circleblack-circle')) {
-      this.setState({winner: 'black'})
+    // if(columnValues.match('red-circlered-circlered-circlered-circle')) {
+    //   this.setState({winner: 'red'})
+    // } else if(columnValues.match('black-circleblack-circleblack-circleblack-circle')) {
+    //   this.setState({winner: 'black'})
+    // }
+    
+    if(columnValues.match('red-circlered-circlered-circlered-circle') || columnValues.match('black-circleblack-circleblack-circleblack-circle')) {
+      return true;
     }
+    
+    return false;
     
   }
   
   //may have to tweak draw logic later
   checkDraw(loc){
     
-    
-    this.fallInCorrectSlot(loc);
     let currentGameBoard = this.state.gameBoard;
     
     if(currentGameBoard.every(el => el !== '')) {
-      this.setState({winner: 'draw'})
+      return true;
     }
     
   }

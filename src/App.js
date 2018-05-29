@@ -37,10 +37,10 @@ class App extends Component {
     //I could probably replace the logic in this method with 'return true'
     //then I could set state of the winner to end the game
     //that way, hopefully I'll avoid having to call "fallInCorrectSlot" multiple times
+    
     this.checkRowWin(loc);
+    // this.checkDraw(loc);
     
-    
-    //check if the move the player made won/tied the game
     
     //switch to the next player after the turn is over
     this.setState({turn: (this.state.turn === 'red') ? 'black' : 'red'})
@@ -93,6 +93,19 @@ class App extends Component {
   
   //thing to work on
   checkColumnWin(loc) {
+    
+  }
+  
+  //may have to tweak draw logic later
+  checkDraw(loc){
+    
+    
+    this.fallInCorrectSlot(loc);
+    let currentGameBoard = this.state.gameBoard;
+    
+    if(currentGameBoard.every(el => el !== '')) {
+      this.setState({winner: 'draw'})
+    }
     
   }
   
@@ -149,9 +162,10 @@ class App extends Component {
       currentGameBoard.splice(lastMissingSpotPosition, 1, red);
     } else {
       currentGameBoard.splice(lastMissingSpotPosition, 1, black);
-    }  
+    }
+    
     this.setState({gameBoard: currentGameBoard});
-    // console.log(this.state.gameBoard);
+    
   }
   
   

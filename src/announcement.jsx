@@ -8,12 +8,16 @@ export default class Announcement extends React.Component {
     let gameWinner;
 
     if(this.props.winner) {
-      gameWinner = this.props.winner[0].toUpperCase() + this.props.winner.slice(1, this.props.winner.length);
+      if(this.props.winner === 'draw') {
+        gameWinner = 'Draw!';
+      } else {
+        gameWinner = this.props.winner[0].toUpperCase() + this.props.winner.slice(1, this.props.winner.length) + ' wins!';
+      }
     }
 
     return (
       <div className={this.props.winner ? 'visible text' : 'hidden'}>
-        <h2>{gameWinner} wins!</h2>
+        <h2>{gameWinner}</h2>
       </div>
     );
   }

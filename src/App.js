@@ -35,6 +35,7 @@ class App extends Component {
     }
     
     this.fallInCorrectSlot(loc);
+    this.checkRowWin(loc);
     
     //check if the move the player made won/tied the game
     
@@ -47,6 +48,15 @@ class App extends Component {
       //filter the array with anything that has the className of "red-circle" or "black-circle" and join by ''
       //use the match thing to check if anything is 'red-circlered-circlered-circlered-circle' or 'black-circleblack-circleblack-circleblack-circle'
       //if so, this.setState({winner: 'something not null'})
+    
+    let rowIndices = this.getRowIndices(loc);
+    
+    //this will give me an array of the descriptions of each circle clicked on for each row 
+      //(e.g. ['red-circle', 'black-circle', 'black-circle', 'red-circle'] => 'red-circleblack-circleblack-circlered-circle')
+    let rowValues = 
+    rowIndices.map(el => this.state.gameBoard[el])
+    .filter(el => el !== '')
+    .map(el => el.props.className).join('');
     
     
   }

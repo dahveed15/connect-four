@@ -139,20 +139,15 @@ class App extends Component {
     
     let currentGameBoard = this.state.gameBoard; 
     
-    //logic to make circles fall into the lowest empty space
+    //logic to make circles find the lowest empty space
+    let columnIndices = this.getColumnIndices(loc);
+    let missingSpots = columnIndices.map(el => currentGameBoard[el]).filter(el => el === '');
+    let lastMissingSpotPosition = columnIndices[missingSpots.length - 1]; 
+    
     if(this.state.turn === 'red') {
-      let columnIndices = this.getColumnIndices(loc);
-      let missingSpots = columnIndices.map(el => currentGameBoard[el]).filter(el => el === '');
-      let lastMissingSpotPosition = columnIndices[missingSpots.length - 1]; 
-      
       //replace the empty spot with a red circle
       currentGameBoard.splice(lastMissingSpotPosition, 1, red);
     } else {
-      let columnIndices = this.getColumnIndices(loc);
-      
-      let missingSpots = columnIndices.map(el => currentGameBoard[el]).filter(el => el === '');
-      let lastMissingSpotPosition = columnIndices[missingSpots.length - 1]; 
-      
       currentGameBoard.splice(lastMissingSpotPosition, 1, black);
     }  
     this.setState({gameBoard: currentGameBoard});

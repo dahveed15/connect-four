@@ -3,12 +3,12 @@ import './tile.css';
 
 export default class Tile extends React.Component {
 
-  //come back to this
+  //border-collapse:collapse
+
   tileClick(props) {
     this.props.updateBoard(this.props.loc);
   }
 
-  //come back to this
   render() {
     return (
       <div className={"tile " + this.props.loc} onClick={() => this.tileClick(this.props)}>

@@ -34,6 +34,9 @@ class App extends Component {
       return;
     }
     
+    //I could probably replace the logic in this method with 'return true'
+    //then I could set state of the winner to end the game
+    //that way, hopefully I'll avoid having to call "fallInCorrectSlot" multiple times
     this.checkRowWin(loc);
     
     
@@ -46,30 +49,29 @@ class App extends Component {
   //still not working perfectly
   checkRowWin(loc) {
     
-    //reusing logic from fallInCorrectSlot
+    //I had to call fallInCorrectSlot to make this logic work, but it may get problematic when checking columns
     this.fallInCorrectSlot(loc);
     let currentGameBoard = this.state.gameBoard;
     
     let columnIndices = this.getColumnIndices(loc);
-    let missingSpots = columnIndices.map(el => currentGameBoard[el]);
+    let allSpots = columnIndices.map(el => currentGameBoard[el]);
     
-    let lastMissingSpotPosition;
+    let highestFilledSpotPosition;
     
-    for(let i = 0; i < missingSpots.length; i++) {
-      if(missingSpots[i] !== '') {
-        lastMissingSpotPosition = columnIndices[i];
+    //I need this so I can check the row of the last space that I clicked on
+    for(let i = 0; i < allSpots.length; i++) {
+      if(allSpots[i] !== '') {
+        highestFilledSpotPosition = columnIndices[i];
         break;
       }
     }
     
-    
-    // let lastMissingSpotPosition = columnIndices[missingSpots.length - 1]; 
-    // 
-    let rowIndices = this.getRowIndices(lastMissingSpotPosition);
+    let rowIndices = this.getRowIndices(highestFilledSpotPosition);
     
     //this will give me an array of the descriptions of each circle clicked on for each row 
       //(e.g. ['red-circle', 'black-circle', 'black-circle', 'red-circle'] => 'red-circleblack-circleblack-circlered-circle')
     
+    //I map each '' to 'empty' to avoid winning falsely when joining by ''
     let rowValues = 
     rowIndices.map(el => this.state.gameBoard[el])
     .map(function(el) {
@@ -86,6 +88,11 @@ class App extends Component {
     } else if(rowValues.match('black-circleblack-circleblack-circleblack-circle')) {
       this.setState({winner: 'black'})
     }
+    
+  }
+  
+  //thing to work on
+  checkColumnWin(loc) {
     
   }
   

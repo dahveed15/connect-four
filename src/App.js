@@ -34,11 +34,8 @@ class App extends Component {
       return;
     }
 
-    //I could probably replace the logic in this method with 'return true'
-    //then I could set state of the winner to end the game
-
     //this I'm calling the fallInCorrectSlot method in the checkRowWin method, every other method following doesn't need to have fallInCorrectSlot called for its logic
-    if(this.checkRowWin(loc) || this.checkColumnWin(loc) || this.checkDownwardDiagonalWin(loc)) {
+    if(this.checkRowWin(loc) || this.checkColumnWin(loc) || this.checkDownwardDiagonalWin(loc) || this.checkUpwardDiagonalWin(loc)) {
       this.setState({winner: this.state.turn});
     }
 
@@ -91,10 +88,71 @@ class App extends Component {
     return false;
   }
 
+  checkColumnWin(loc) {
+
+    let columnIndices = this.getColumnIndices(loc);
+
+    let currentGameBoard = this.state.gameBoard;
+
+    let columnValues = columnIndices.map(el => currentGameBoard[el])
+    .map(function(el) {
+      if(el === '') {
+        return 'empty';
+      } else {
+        return el.props.className;
+      }
+    }).join('');
+
+    if(columnValues.match('red-circlered-circlered-circlered-circle') || columnValues.match('black-circleblack-circleblack-circleblack-circle')) {
+      return true;
+    }
+
+    return false;
+
+  }
+
+  checkUpwardDiagonalWin(loc) {
+
+    let columnIndices = this.getColumnIndices(loc);
+
+    let currentGameBoard = this.state.gameBoard;
+
+    let allSpots = columnIndices.map(el => currentGameBoard[el]);
+
+    let highestFilledSpotPosition;
+
+    //I need this so I can check the diagonal of the last space that I clicked on
+    for(let i = 0; i < allSpots.length; i++) {
+      if(allSpots[i] !== '') {
+        highestFilledSpotPosition = columnIndices[i];
+        break;
+      }
+    }
+
+    let diagonalIndices = this.getUpwardDiagonalIndices(highestFilledSpotPosition);
+
+    let diagonalValues =
+    diagonalIndices.map(el => this.state.gameBoard[el])
+    .map(function(el) {
+      if(el === '') {
+        return 'empty';
+      } else {
+        return el.props.className;
+      }
+    }).join('');
+
+    if(diagonalValues.match('red-circlered-circlered-circlered-circle') || diagonalValues.match('black-circleblack-circleblack-circleblack-circle')) {
+      return true;
+    }
+
+    return false;
+
+  }
+
   checkDownwardDiagonalWin(loc) {
 
     let columnIndices = this.getColumnIndices(loc);
-    
+
     let currentGameBoard = this.state.gameBoard;
 
     let allSpots = columnIndices.map(el => currentGameBoard[el]);
@@ -126,35 +184,6 @@ class App extends Component {
     }
 
     return false;
-  }
-
-  checkColumnWin(loc) {
-
-    let columnIndices = this.getColumnIndices(loc);
-
-    let currentGameBoard = this.state.gameBoard;
-
-    let columnValues = columnIndices.map(el => currentGameBoard[el])
-    .map(function(el) {
-      if(el === '') {
-        return 'empty';
-      } else {
-        return el.props.className;
-      }
-    }).join('');
-
-    // if(columnValues.match('red-circlered-circlered-circlered-circle')) {
-    //   this.setState({winner: 'red'})
-    // } else if(columnValues.match('black-circleblack-circleblack-circleblack-circle')) {
-    //   this.setState({winner: 'black'})
-    // }
-
-    if(columnValues.match('red-circlered-circlered-circlered-circle') || columnValues.match('black-circleblack-circleblack-circleblack-circle')) {
-      return true;
-    }
-
-    return false;
-
   }
 
   checkDraw(loc){
@@ -225,7 +254,55 @@ class App extends Component {
     return column;
   }
 
-  //I think this works for now
+  getUpwardDiagonalIndices(loc) {
+
+    let leftBoundaries = [];
+
+    for(let i = 0; i < 35; i+= 7) {
+      leftBoundaries.push(i);
+    }
+
+    for(let i = 35; i <= 41; i++) {
+      leftBoundaries.push(i);
+    }
+
+    let rightBoundaries = [];
+
+    for(let i = 0; i < 6; i++) {
+      rightBoundaries.push(i);
+    }
+
+    for(let i = 6; i <= 41; i += 7) {
+      rightBoundaries.push(i);
+    }
+
+
+    let diagonal = [];
+    let temp = loc;
+    diagonal.push(temp);
+
+    //this will give me the upward diagonals from the place I clicked on
+    while(!rightBoundaries.includes(temp)) {
+      temp -= 6;
+      diagonal.push(temp);
+    }
+
+    //logic to get the diagonals before spot clicked on (if necessary)
+    if(leftBoundaries.includes(loc)) {
+      //this case is for the top left and bottom right tiles
+      return diagonal;
+    } else {
+      temp = loc;
+      while(!leftBoundaries.includes(temp)) {
+        //we need all of the tiles from the bottom corners to the location I'm on
+        temp += 6;
+        diagonal.unshift(temp);
+      }
+      return diagonal;
+    }
+
+  }
+
   getDownwardDiagonalIndices(loc) {
 
     let leftBoundaries = [];
@@ -256,8 +333,6 @@ class App extends Component {
     let temp = loc;
     diagonal.push(temp);
 
-    //this will most likely be very similar to the getColumnIndices logic
-
     //this will only give me the tiles from where I clicked to the end
     while(!rightBoundaries.includes(temp)) {
       temp += 8;
@@ -277,9 +352,6 @@ class App extends Component {
       return diagonal;
     }
 
-
-
-
   }
 
   fallInCorrectSlot(loc) {
@@ -293,6 +365,7 @@ class App extends Component {
 
     //logic to make circles find the lowest empty space
     let columnIndices = this.getColumnIndices(loc);
+    
     let missingSpots = columnIndices.map(el => currentGameBoard[el]).filter(el => el === '');
     let lastMissingSpotPosition = columnIndices[missingSpots.length - 1];
 

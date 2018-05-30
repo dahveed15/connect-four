@@ -365,7 +365,7 @@ class App extends Component {
 
     //logic to make circles find the lowest empty space
     let columnIndices = this.getColumnIndices(loc);
-    
+
     let missingSpots = columnIndices.map(el => currentGameBoard[el]).filter(el => el === '');
     let lastMissingSpotPosition = columnIndices[missingSpots.length - 1];
 
@@ -412,6 +412,7 @@ class App extends Component {
           <h2 className="text">{turnMessage}</h2>
           <Announcement winner={this.state.winner}/>
           <ResetButton reset={this.resetBoard.bind(this)}/>
+
         </div>
 
           {this.state.gameBoard.map((val, idx) =>

@@ -22,7 +22,7 @@ class App extends Component {
       ],
       turn: 'red',
       winner: null
-    }
+    };
   }
 
   updateBoard(loc) {
@@ -38,16 +38,16 @@ class App extends Component {
     //then I could set state of the winner to end the game
 
     //this I'm calling the fallInCorrectSlot method in the checkRowWin method, every other method following doesn't need to have fallInCorrectSlot called for its logic
-    if(this.checkRowWin(loc) || this.checkColumnWin(loc)) {
-      this.setState({winner: this.state.turn})
+    if(this.checkRowWin(loc) || this.checkColumnWin(loc) || this.checkDownwardDiagonalWin(loc)) {
+      this.setState({winner: this.state.turn});
     }
 
     if(this.checkDraw(loc)) {
-      this.setState({winner: 'draw'})
+      this.setState({winner: 'draw'});
     }
 
     //switch to the next player after the turn is over
-    this.setState({turn: (this.state.turn === 'red') ? 'black' : 'red'})
+    this.setState({turn: (this.state.turn === 'red') ? 'black' : 'red'});
   }
 
   checkRowWin(loc) {
@@ -91,6 +91,42 @@ class App extends Component {
     return false;
   }
 
+  checkDownwardDiagonalWin(loc) {
+
+    let columnIndices = this.getColumnIndices(loc);
+    
+    let currentGameBoard = this.state.gameBoard;
+
+    let allSpots = columnIndices.map(el => currentGameBoard[el]);
+
+    let highestFilledSpotPosition;
+
+    //I need this so I can check the diagonal of the last space that I clicked on
+    for(let i = 0; i < allSpots.length; i++) {
+      if(allSpots[i] !== '') {
+        highestFilledSpotPosition = columnIndices[i];
+        break;
+      }
+    }
+
+    let diagonalIndices = this.getDownwardDiagonalIndices(highestFilledSpotPosition);
+
+    let diagonalValues =
+    diagonalIndices.map(el => this.state.gameBoard[el])
+    .map(function(el) {
+      if(el === '') {
+        return 'empty';
+      } else {
+        return el.props.className;
+      }
+    }).join('');
+
+    if(diagonalValues.match('red-circlered-circlered-circlered-circle') || diagonalValues.match('black-circleblack-circleblack-circleblack-circle')) {
+      return true;
+    }
+
+    return false;
+  }
 
   checkColumnWin(loc) {
 
@@ -216,11 +252,6 @@ class App extends Component {
       rightBoundaries.push(i);
     }
 
-    //sort the boundary values in order
-    rightBoundaries = rightBoundaries.sort(function(a,b) {
-      return a - b;
-    });
-
     let diagonal = [];
     let temp = loc;
     diagonal.push(temp);
@@ -259,7 +290,6 @@ class App extends Component {
   </div>;
 
     let currentGameBoard = this.state.gameBoard;
-    console.log(this.getDownwardDiagonalIndices(loc));
 
     //logic to make circles find the lowest empty space
     let columnIndices = this.getColumnIndices(loc);
@@ -292,7 +322,7 @@ class App extends Component {
       ],
       turn: 'red',
       winner: null
-    })
+    });
   }
 
   render() {

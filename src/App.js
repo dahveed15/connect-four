@@ -81,11 +81,7 @@ class App extends Component {
       }
     }).join('');
 
-    if(rowValues.match('red-circlered-circlered-circlered-circle') || rowValues.match('black-circleblack-circleblack-circleblack-circle')) {
-      return true;
-    }
-
-    return false;
+    return rowValues.match('red-circlered-circlered-circlered-circle') || rowValues.match('black-circleblack-circleblack-circleblack-circle');
   }
 
   checkColumnWin(loc) {
@@ -103,11 +99,7 @@ class App extends Component {
       }
     }).join('');
 
-    if(columnValues.match('red-circlered-circlered-circlered-circle') || columnValues.match('black-circleblack-circleblack-circleblack-circle')) {
-      return true;
-    }
-
-    return false;
+    return columnValues.match('red-circlered-circlered-circlered-circle') || columnValues.match('black-circleblack-circleblack-circleblack-circle');
 
   }
 
@@ -141,11 +133,7 @@ class App extends Component {
       }
     }).join('');
 
-    if(diagonalValues.match('red-circlered-circlered-circlered-circle') || diagonalValues.match('black-circleblack-circleblack-circleblack-circle')) {
-      return true;
-    }
-
-    return false;
+    return diagonalValues.match('red-circlered-circlered-circlered-circle') || diagonalValues.match('black-circleblack-circleblack-circleblack-circle');
 
   }
 
@@ -179,11 +167,7 @@ class App extends Component {
       }
     }).join('');
 
-    if(diagonalValues.match('red-circlered-circlered-circlered-circle') || diagonalValues.match('black-circleblack-circleblack-circleblack-circle')) {
-      return true;
-    }
-
-    return false;
+    return diagonalValues.match('red-circlered-circlered-circlered-circle') || diagonalValues.match('black-circleblack-circleblack-circleblack-circle');
   }
 
   checkDraw(loc){
